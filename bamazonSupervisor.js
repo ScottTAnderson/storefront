@@ -42,12 +42,12 @@ function supervisorOptions() {
 };
 
 function viewProductsByDept() {
-    var query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, products.product_sales, " +
-    "products.product_sales - departments.over_head_costs AS total_profit " +
+    var query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales), " +
+    "SUM(products.product_sales) - departments.over_head_costs AS total_profit " +
     "FROM departments " + 
-    "INNER JOIN products " +
+    "LEFT JOIN products " +
     "ON departments.department_name = products.department_name " +
-    "GROUP BY departments.department_name;"
+    "GROUP BY products.department_name;"
     connection.query(query, function (err, res) {
         if (err) throw err;
         console.table(res);
